@@ -1,4 +1,7 @@
+from django.contrib.auth.models import User
 from django.db import models
+import re
+from django.core.exceptions import ValidationError
 
 
 class BaseModel(models.Model):
@@ -9,10 +12,20 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Seller(BaseModel):
-    full_name = models.CharField(max_length=250)
-    phone = models.CharField(max_length=14)
+def validate_uzbek_phone_number(value):
+    uzbek_phone_regex = r'^\+998\d{9}$'
+    if not re.match(uzbek_phone_regex, value):
+        raise ValidationError('Telefon raqami O‘zbekiston formatida bo‘lishi kerak: +998XXXXXXXXX')
 
+
+class Seller(BaseModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='seller_profile')
+    full_name = models.CharField(max_length=250)
+    phone = models.CharField(
+        max_length=13,
+        validators=[validate_uzbek_phone_number],
+        unique=True
+    )
     def __str__(self):
         return self.full_name
 
@@ -22,6 +35,14 @@ class Category(BaseModel):
 
     def __str__(self):
         return self.name
+
+
+class Customer(BaseModel):
+    full_name = models.CharField(max_length=250)
+    phone = models.CharField(max_length=14)
+
+    def __str__(self):
+        return self.full_name
 
 
 class Product(BaseModel):
@@ -36,14 +57,6 @@ class Product(BaseModel):
 
     def __str__(self):
         return self.name
-
-
-class Customer(BaseModel):
-    full_name = models.CharField(max_length=250)
-    phone = models.CharField(max_length=14)
-
-    def __str__(self):
-        return self.full_name
 
 
 class Cart(BaseModel):
