@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 import re
 from django.core.exceptions import ValidationError
@@ -17,17 +17,53 @@ def validate_uzbek_phone_number(value):
     if not re.match(uzbek_phone_regex, value):
         raise ValidationError('Telefon raqami O‘zbekiston formatida bo‘lishi kerak: +998XXXXXXXXX')
 
+class CustomerUserManager(BaseUserManager):
+    def create_user(self, phone, password=None, **extra_fields):
+        if not phone:
+            raise ValueError("Telefon no'mer ta'lab qilinadi!")
+        user = self.model(phone=phone, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
+
+    def create_superuser(self, phone, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(phone, password, **extra_fields)
+
+class User(AbstractUser):
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='custom_user_groups',
+        blank=True
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='custom_user_groups',
+        blank=True
+    )
+    username = None
+    phone = models.CharField(max_length=13, unique=True, validators=[validate_uzbek_phone_number])
+    full_name = models.CharField(max_length=250)
+    is_seller = models.BooleanField(default=False)
+    is_customer = models.BooleanField(default=False)
+
+    USERNAME_FIELD = 'phone'
+    REQUIRED_FIELDS = []
+    objects = CustomerUserManager()
 
 class Seller(BaseModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='seller_profile')
-    full_name = models.CharField(max_length=250)
-    phone = models.CharField(
-        max_length=13,
-        validators=[validate_uzbek_phone_number],
-        unique=True
-    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='sellers')
+
     def __str__(self):
         return self.full_name
+
+class Customer(BaseModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customers')
+
+    def __str__(self):
+        return self.full_name
+
 
 
 class Category(BaseModel):
@@ -35,14 +71,6 @@ class Category(BaseModel):
 
     def __str__(self):
         return self.name
-
-
-class Customer(BaseModel):
-    full_name = models.CharField(max_length=250)
-    phone = models.CharField(max_length=14)
-
-    def __str__(self):
-        return self.full_name
 
 
 class Product(BaseModel):

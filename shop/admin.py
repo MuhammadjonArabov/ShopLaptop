@@ -3,8 +3,12 @@ from .models import Seller, Product, Customer, Cart, Order, OrderProduct, Review
 
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'phone', 'created_at', 'updated_at')
-    search_fields = ('full_name', 'phone')
+    list_display = ('user',)
+
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ('user',)
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
@@ -12,10 +16,9 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('name', 'comment')
     list_filter = ('status',)
 
-@admin.register(Customer)
-class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('full_name', 'phone', 'created_at', 'updated_at')
-    search_fields = ('full_name', 'phone')
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at', 'updated_at')
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
@@ -44,10 +47,6 @@ class WishlistAdmin(admin.ModelAdmin):
     list_display = ('customer', 'created_at', 'updated_at')
     search_fields = ('customer__full_name',)
 
-@admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at', 'updated_at')
-    search_fields = ('name',)
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
