@@ -32,6 +32,7 @@ class Product(BaseModel):
     sellers = models.ManyToManyField(Seller, related_name='products')
     category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
+    images = models.ImageField(upload_to='product_images/', blank=True, null=True)
 
     def __str__(self):
         return self.name

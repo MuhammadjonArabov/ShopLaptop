@@ -8,7 +8,7 @@ class SellerAdmin(admin.ModelAdmin):
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'quantity', 'status', 'created_at', 'updated_at')
+    list_display = ('name', 'price', 'quantity', 'status', 'created_at', 'images')
     search_fields = ('name', 'comment')
     list_filter = ('status',)
 
