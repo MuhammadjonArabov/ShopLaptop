@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>Kirish</title>
 </head>
 <body>
-    <div class="contener">
+    <div class="container">
         <form method="post">
-            {% csrf_token%}
+            {% csrf_token %}
             <h2>Kirish</h2>
             {% if error %}
-               <p class="error">{{ error }}</p>
+                <p class="error">{{ error }}</p>
             {% endif %}
-            <input type="text" name="phone" placeholder="Telfon" required>
-            <input type="text" name="password" placeholder="Parol" required>
-            <button type="submit">Kirish</button>   
+            <input type="text" name="phone" placeholder="Telefon" required>
+            <input type="password" name="password" placeholder="Parol" required>
+            <button type="submit">Kirish</button>
         </form>
     </div>
 </body>
