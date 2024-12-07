@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="">
+    <title>Ro'yxatdan o'tish</title>
+</head>
+<body>
+    <div class="contener">
+        <form method="POST">
+            {% csrf_token %}
+            <h2>Ro'yxatdan o'tish</h2>
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+            <input type="text" name="full_name" placeholder="Ism va Familiya" required>
+            <input type="text" name="phone" placeholder="Telfon: +998xxxxxxxxx" required>
+            <input type="text" name="password" placeholder="Parol" required>
+            <button type="submit">Ro'yxatdan o'tish</button>    
+        </form>
+    </div>
+</body>
+</html>
