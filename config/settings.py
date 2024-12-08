@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 ]
-
+AUTHENTICATION_BACKENDS = ['shop.backends.PhoneBackend']
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
