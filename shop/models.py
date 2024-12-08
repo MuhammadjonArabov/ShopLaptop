@@ -56,13 +56,13 @@ class Seller(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='sellers')
 
     def __str__(self):
-        return self.full_name
+        return self.user.full_name
 
 class Customer(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customers')
 
     def __str__(self):
-        return self.full_name
+        return self.user.full_name
 
 
 

@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    {% load static %}
 </head>
 <body>
-    <h1>Salom bu asosoiy sahifa</h1>
-    {% csrf_token %}
+    <h1>Salom bu asosiy sahifa</h1>
     
+    <form method="POST" action="">
+        {% csrf_token %}
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>
