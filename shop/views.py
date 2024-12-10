@@ -87,6 +87,6 @@ def add_product(request):
         product.sellers.add(request.user.sellers)
         product.save()
 
-        return redirect('product_list')  
+        return redirect('products/product_list')  
 
-    return render(request, 'add_product.html', {'categories': categories})
+    return render(request, 'products/add_product.html', {'categories': categories})
