@@ -1,7 +1,9 @@
+from unicodedata import category
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from .models import User, Seller, Customer
+from .models import User, Seller, Customer, Category, Product
 
 
 def register_user(request, user_type='customer'):
@@ -55,3 +57,36 @@ def register(request):
 
 def seller_register(request):
     return register_user(request, user_type='seller')
+
+@login_required
+def add_product(request):
+    if not request.user.is_seller:
+        return redirect('index')  
+
+    categories = Category.objects.all()
+
+    if request.method == "POST":
+        name = request.POST['name']
+        price = request.POST['price']
+        comment = request.POST.get('comment', '')
+        quantity = request.POST['quantity']
+        category_id = request.POST['category']
+        category = Category.objects.get(id=category_id)
+        image = request.FILES.get('images', None)
+
+        product = Product.objects.create(
+            name=name,
+            price=price,
+            comment=comment,
+            quantity=quantity,
+            category=category,
+            status=False
+        )
+        if image:
+            product.images = image
+        product.sellers.add(request.user.sellers)
+        product.save()
+
+        return redirect('product_list')  
+
+    return render(request, 'add_product.html', {'categories': categories})

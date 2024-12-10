@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/add_product.css' %}">
+    <title>Mahsulot Qo'shish</title>
+</head>
+<body>
+    
+    <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'product_list' %}">Mahsulotlar</a></li>
+            <li><a href="{% url 'seller_register' %}">Seller bo'lish</a></li>
+            <li><a href="#">Sellerlar</a></li>
+            <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Mahsulot Qo'shish</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">Mahsulot nomi:</label>
+                <input type="text" id="name" name="name" placeholder="Mahsulot nomini kiriting" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Narxi:</label>
+                <input type="number" id="price" name="price" placeholder="Mahsulot narxini kiriting" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="comment">Izoh:</label>
+                <textarea id="comment" name="comment" placeholder="Mahsulot haqida qisqacha izoh" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Miqdor:</label>
+                <input type="number" id="quantity" name="quantity" placeholder="Miqdor kiriting" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Kategoriya:</label>
+                <select id="category" name="category" required>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="images">Rasm:</label>
+                <input type="file" id="images" name="images" accept="image/*">
+            </div>
+            <button type="submit" class="btn">Qo'shish</button>
+        </form>
+    </div>
+</body>
+</html>
