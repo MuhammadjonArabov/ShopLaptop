@@ -12,10 +12,12 @@ class BaseModel(models.Model):
         abstract = True
 
 
-def validate_uzbek_phone_number(value):
-    uzbek_phone_regex = r'^\+998\d{9}$'
-    if not re.match(uzbek_phone_regex, value):
-        raise ValidationError('Telefon raqami O‘zbekiston formatida bo‘lishi kerak: +998XXXXXXXXX')
+def validate_phone(value):
+    pattern = r'^\+998[0-9]{9}$'
+    if not re.match(pattern, value):
+        raise ValidationError(f"{value} noto'g'ri telefon raqami formatida.")
+
+
 
 class CustomerUserManager(BaseUserManager):
     def create_user(self, phone, password=None, **extra_fields):
@@ -31,6 +33,8 @@ class CustomerUserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(phone, password, **extra_fields)
 
+
+
 class User(AbstractUser):
     groups = models.ManyToManyField(
         'auth.Group',
@@ -43,7 +47,7 @@ class User(AbstractUser):
         blank=True
     )
     username = None
-    phone = models.CharField(max_length=13, unique=True, validators=[validate_uzbek_phone_number])
+    phone = models.CharField(max_length=13, unique=True, validators=[validate_phone])
     full_name = models.CharField(max_length=250)
     is_seller = models.BooleanField(default=False)
     is_customer = models.BooleanField(default=False)
@@ -52,11 +56,14 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
     objects = CustomerUserManager()
 
+
+
 class Seller(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='sellers')
 
     def __str__(self):
         return self.user.full_name
+
 
 class Customer(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customers')
@@ -73,6 +80,7 @@ class Category(BaseModel):
         return self.name
 
 
+
 class Product(BaseModel):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -87,6 +95,7 @@ class Product(BaseModel):
         return self.name
 
 
+
 class Cart(BaseModel):
     product = models.ForeignKey(Product, related_name='carts', on_delete=models.SET_NULL, null=True)
     customer = models.ForeignKey(Customer, related_name='carts', on_delete=models.SET_NULL, null=True)
@@ -95,6 +104,7 @@ class Cart(BaseModel):
 
     def __str__(self):
         return f'Cart of {self.customer} for {self.product}'
+
 
 
 class Order(BaseModel):
@@ -124,6 +134,7 @@ class Review(BaseModel):
 
     def __str__(self):
         return f'Review for {self.product.name} by {self.customer.full_name}'
+
 
 
 class Wishlist(BaseModel):

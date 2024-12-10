@@ -8,6 +8,10 @@
 </head>
 <body>
     <div class="container">
+        <div class="nav-links">
+            <a href="{% url 'register' %}">Ro'yxatdan o'tish</a>
+            <a href="{% url 'seller_register' %}">Seller bo'lish</a>
+        </div>
         <form method="post">
             {% csrf_token %}
             <h2>Kirish</h2>
