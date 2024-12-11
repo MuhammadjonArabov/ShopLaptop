@@ -1,6 +1,23 @@
 from django.contrib import admin
-from .models import Seller, Product, Customer, Cart, Order, OrderProduct, Review, Wishlist, Category, Payment
+from .models import Seller, Product, Customer, Cart, Order, OrderProduct, Review, Wishlist, Category, Payment, User
+from django.contrib.auth.admin import UserAdmin
 
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    fieldsets = (
+        (None, {'fields': ('phone', 'password')}),
+        ('Personal info', {'fields': ('full_name',)}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+    )
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('phone', 'password1', 'password2'),
+        }),
+    )
+    list_display = ('phone', 'full_name', 'is_staff', 'is_superuser')
+    search_fields = ('phone', 'full_name')
+    ordering = ('phone',)
 
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):

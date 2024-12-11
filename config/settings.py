@@ -50,7 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 ]
-AUTHENTICATION_BACKENDS = ['shop.backends.PhoneBackend']
+#AUTHENTICATION_BACKENDS = ['shop.backends.PhoneBackend']
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -137,8 +137,8 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
@@ -146,17 +146,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
-
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
-    "site_title": "Library Admin",
+    #"site_title": "E-commerce",
 
     # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_header": "Shop Laptop",
 
     # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_brand": "Shop Laptop",
+    "site_brand": "E-commerce",
 
     # Logo to use for your site, must be present in static files, used for brand on top left
     #"site_logo": "books/img/logo.png",
@@ -196,9 +194,14 @@ JAZZMIN_SETTINGS = {
         # Url that gets reversed (Permissions can be added)
         {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
 
+        # external url that opens in a new window (Permissions can be added)
+        #{"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+
         # model admin to link to (Permissions checked against model)
         {"model": "auth.User"},
 
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "books"},
     ],
 
     #############
@@ -281,5 +284,5 @@ JAZZMIN_SETTINGS = {
     # override change forms on a per modeladmin basis
     "changeform_format_overrides": {"auth.user": "collapsible", "auth.group": "vertical_tabs"},
     # Add a language dropdown into the admin
-    #"language_chooser": True,
+    "language_chooser": False,
 }
