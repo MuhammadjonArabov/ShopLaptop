@@ -17,9 +17,19 @@ def register_user(request, user_type='customer'):
             template = 'products/seller_register.html' if user_type == 'seller' else 'products/register.html'
             return render(request, template, {'error': error_msg})
 
-        user = User.objects.create_user(full_name=full_name, phone=phone, password=password,
-                                        is_seller=(user_type == 'seller'))
-        if user_type == 'seller':
+        is_seller = user_type == 'seller'
+        is_customer = not is_seller
+
+        user = User.objects.create_user(
+            full_name=full_name,
+            phone=phone,
+            password=password,
+            is_seller=is_seller,
+            is_customer=is_customer,
+            is_staff=True,
+        )
+
+        if is_seller:
             Seller.objects.create(user=user)
         else:
             Customer.objects.create(user=user)
@@ -29,6 +39,7 @@ def register_user(request, user_type='customer'):
 
     template = 'products/seller_register.html' if user_type == 'seller' else 'products/register.html'
     return render(request, template)
+
 
 
 def login_view(request):
@@ -61,7 +72,7 @@ def seller_register(request):
 @login_required
 def add_product(request):
     if not request.user.is_seller:
-        return redirect('index')  
+        return redirect('index')
 
     categories = Category.objects.all()
 
@@ -82,11 +93,18 @@ def add_product(request):
             category=category,
             status=False
         )
+
         if image:
             product.images = image
-        product.sellers.add(request.user.sellers)
+
+        try:
+            seller = request.user.seller
+            product.sellers.add(seller)
+        except Seller.DoesNotExist:
+            return redirect('index')
+
         product.save()
 
-        return redirect('products/product_list')  
+        return redirect('products/product_list')
 
     return render(request, 'products/add_product.html', {'categories': categories})
