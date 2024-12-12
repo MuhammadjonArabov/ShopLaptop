@@ -1,0 +1,154 @@
+/* General Styling */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.navbar {
+    background-color: #174b63;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    border-bottom: 3px solid #004080;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px 20px;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.nav-menu a:hover {
+    color: #FFD700;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.container h1 {
+    font-size: 24px;
+    text-align: center;
+    color: #0056A0;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 15px;
+}
+form {
+    padding: 25px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #0056A0;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 86, 160, 0.5);
+}
+
+button.btn {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #0056A0;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button.btn:hover {
+    background-color: #003f7f;
+}
+
+/* Notification Styling */
+.notification {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    animation: fadeInOut 5s ease-in-out;
+}
+
+/* Notification Animation */
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    10%, 90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-menu {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    button.btn {
+        font-size: 14px;
+    }
+}

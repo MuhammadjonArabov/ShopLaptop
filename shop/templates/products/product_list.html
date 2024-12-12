@@ -15,5 +15,22 @@
             <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
         </ul>
     </nav>
+
+    <div class="product-container">
+        {% for product in products %}
+            {% if product.status %}
+                <div class="product-card">
+                    <img src="{{ product.images.url }}" alt="{{ product.name }}" class="product-image">
+                    <div class="product-info">
+                        <h3>{{ product.name }}</h3>
+                        <p>{{ product.price }}</p>
+                    </div>
+                    <div class="product-details">
+
+                    </div>
+
+                </div>
+
+    </div>
 </body>
 </html>
