@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+    <title>Mahsulot Qo'shish</title>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="#">Mahsulotlar</a></li>
+            <li><a href="{% url 'seller_register' %}">Seller bo'lish</a></li>
+            <li><a href="#">Sellerlar</a></li>
+            <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
+        </ul>
+    </nav>
+    <h1>Tasdiqlandi</h1>
+
+</body>
+</html>
