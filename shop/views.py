@@ -101,7 +101,7 @@ def add_product(request):
             seller = request.user.seller
             product.sellers.add(seller)
         except Seller.DoesNotExist:
-            return redirect('index')
+            return redirect('confirmation')
 
         product.save()
 
@@ -113,7 +113,7 @@ def add_product(request):
 def product_list(request):
         products = Product.objects.filter(status=True)
         context = {
-            'products': product
+            'products': products
         }
         return render(request, 'index.html', context)
 
