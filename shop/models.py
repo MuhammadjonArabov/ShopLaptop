@@ -85,13 +85,14 @@ class Product(BaseModel):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     comment = models.TextField(blank=True)
     quantity = models.IntegerField()
-    sellers = models.ForeignKey(Seller, related_name='products', on_delete=models.CASCADE)  # Fixed here
+    sellers = models.ManyToManyField(Seller, related_name='products')  
     category = models.ForeignKey(Category, related_name='category', on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
     images = models.ImageField(upload_to='product_images/', blank=True, null=True)
 
     def __str__(self):
         return self.name
+
 
 
 

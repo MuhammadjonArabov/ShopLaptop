@@ -108,3 +108,12 @@ def add_product(request):
         return redirect('products/product_list')
 
     return render(request, 'products/add_product.html', {'categories': categories})
+
+
+def product_list(request):
+        products = Product.objects.filter(status=True)
+        context = {
+            'products': product
+        }
+        return render(request, 'index.html', context)
+

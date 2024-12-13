@@ -3,13 +3,13 @@
 <head>
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/product.css' %}">
-    <title>Kirish</title>
+    <title>Mahsulotlar</title>
 </head>
 <body>
     <nav class="navbar">
         <ul class="nav-menu">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Mahsulotlar</a></li>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'index' %}">Mahsulotlar</a></li>
             <li><a href="{% url 'seller_register' %}">Seller bo'lish</a></li>
             <li><a href="#">Sellerlar</a></li>
             <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
@@ -23,14 +23,21 @@
                     <img src="{{ product.images.url }}" alt="{{ product.name }}" class="product-image">
                     <div class="product-info">
                         <h3>{{ product.name }}</h3>
-                        <p>{{ product.price }}</p>
+                        <p>${{ product.price }}</p>
                     </div>
                     <div class="product-details">
-
+                        <p><strong>Izoh:</strong> {{ product.comment }}</p>
+                        <p><strong>Kategoriya:</strong> {{ product.category.name }}</p>
+                        <p><strong>Miqdor:</strong> {{ product.quantity }}</p>
+                        <p><strong>Sotuvchilar:</strong> 
+                            {% for seller in product.sellers.all %}
+                                {{ seller.user.full_name }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </p>
                     </div>
-
                 </div>
-
+            {% endif %}
+        {% endfor %}
     </div>
 </body>
 </html>
