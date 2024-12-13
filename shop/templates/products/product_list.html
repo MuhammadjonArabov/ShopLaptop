@@ -2,42 +2,61 @@
 <html lang="en">
 <head>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/product_list.css' %}">
     <title>Mahsulotlar</title>
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar">
         <ul class="nav-menu">
             <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'index' %}">Mahsulotlar</a></li>
+            <li><a href="{% url 'product_list' %}">Mahsulotlar</a></li>
             <li><a href="{% url 'seller_register' %}">Seller bo'lish</a></li>
             <li><a href="#">Sellerlar</a></li>
             <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
         </ul>
     </nav>
 
-    <div class="product-container">
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Mahsulot nomi yoki kategoriyasi bo'yicha qidiring">
+        <button onclick="searchProducts()">Qidiruv</button>
+    </div>
+
+    <div class="product-container" id="product-container">
         {% for product in products %}
             {% if product.status %}
                 <div class="product-card">
                     <img src="{{ product.images.url }}" alt="{{ product.name }}" class="product-image">
                     <div class="product-info">
                         <h3>{{ product.name }}</h3>
-                        <p>${{ product.price }}</p>
-                    </div>
-                    <div class="product-details">
+                        <p><strong>Narxi:</strong> ${{ product.price }}</p>
                         <p><strong>Izoh:</strong> {{ product.comment }}</p>
                         <p><strong>Kategoriya:</strong> {{ product.category.name }}</p>
                         <p><strong>Miqdor:</strong> {{ product.quantity }}</p>
-                        <p><strong>Sotuvchilar:</strong> 
-                            {% for seller in product.sellers.all %}
-                                {{ seller.user.full_name }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        </p>
+                        <p><strong>Sotuvchi:</strong> {{ product.seller.user.full_name }}</p>
+                        <p><strong>Telefon:</strong> {{ product.seller.user.phone }}</p>
                     </div>
                 </div>
             {% endif %}
         {% endfor %}
     </div>
+
+    <script>
+        function searchProducts() {
+            const input = document.getElementById('search-input').value.toLowerCase();
+            const products = document.querySelectorAll('.product-card');
+            products.forEach(product => {
+                const name = product.querySelector('h3').textContent.toLowerCase();
+                const category = product.querySelector('p:nth-child(4)').textContent.toLowerCase();
+                if (name.includes(input) || category.includes(input)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

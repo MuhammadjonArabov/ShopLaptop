@@ -11,7 +11,7 @@
     <nav class="navbar">
         <ul class="nav-menu">
             <li><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="#">Mahsulotlar</a></li>
+            <li><a href="{% url 'product_list' %}">Mahsulotlar</a></li>
             <li><a href="{% url 'seller_register' %}">Seller bo'lish</a></li>
             <li><a href="#">Sellerlar</a></li>
             <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
@@ -54,18 +54,5 @@
         </form>
     </div>
 
-    <div class="notification" id="notification" style="display: none;">
-        Sizning yaratgan mahsulotingiz ko'rib chiqish uchun yuborildi.
-    </div>
-
-    <script>
-        document.querySelector('form').addEventListener('submit', function (event) {
-            const notification = document.getElementById('notification');
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 5000);
-        });
-    </script>
 </body>
 </html>

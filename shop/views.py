@@ -67,13 +67,37 @@ def register(request):
 
 
 def seller_register(request):
-    return register_user(request, user_type='seller')
+    if request.method == "POST":
+        full_name = request.POST['full_name']
+        phone = request.POST['phone']
+        password = request.POST['password']
+        image = request.FILES.get('image')
 
-@login_required
-def add_product(request):
-    if not request.user.is_seller:
+        if User.objects.filter(phone=phone).exists():
+            error_msg = 'Bu telefon raqami allaqachon ro‘yxatdan o‘tgan.'
+            return render(request, 'products/seller_register.html', {'error': error_msg})
+
+        user = User.objects.create_user(
+            full_name=full_name,
+            phone=phone,
+            password=password,
+            is_seller=True,
+            is_customer=True,
+            is_staff=True,  
+        )
+
+        Seller.objects.create(user=user, image=image)
+
+        login(request, user)
         return redirect('index')
 
+    return render(request, 'products/seller_register.html')
+@login_required
+def add_product(request):
+    if not hasattr(request.user, 'seller'):
+        return redirect('index')
+
+    seller = request.user.seller  
     categories = Category.objects.all()
 
     if request.method == "POST":
@@ -91,21 +115,15 @@ def add_product(request):
             comment=comment,
             quantity=quantity,
             category=category,
+            seller=seller,  
             status=False
         )
 
         if image:
             product.images = image
-
-        try:
-            seller = request.user.seller
-            product.sellers.add(seller)
-        except Seller.DoesNotExist:
-            return redirect('confirmation')
-
         product.save()
 
-        return redirect('products/product_list')
+        return redirect('index')
 
     return render(request, 'products/add_product.html', {'categories': categories})
 
@@ -115,5 +133,5 @@ def product_list(request):
         context = {
             'products': products
         }
-        return render(request, 'index.html', context)
+        return render(request, 'products/product_list.html', context)
 

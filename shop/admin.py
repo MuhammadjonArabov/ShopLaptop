@@ -15,7 +15,7 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('phone', 'password1', 'password2'),
         }),
     )
-    list_display = ('phone', 'full_name', 'is_staff', 'is_superuser', 'is_seller', 'is_customer')
+    list_display = ('id', 'phone', 'full_name', 'is_staff', 'is_superuser', 'is_seller', 'is_customer')
     search_fields = ('phone', 'full_name')
     ordering = ('phone',)
 
@@ -27,62 +27,32 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'created_at', 'updated_at')
+    list_display = ('id', 'user', 'created_at', 'updated_at')
     search_fields = ('user__full_name',)
     list_filter = ('created_at',)
-
-    def get_model_perms(self, request):
-        if not request.user.is_staff:
-            return {}
-        return super().get_model_perms(request)
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if not request.user.is_superuser:
-            return qs.filter(user=request.user)
-        return qs
 
 
 @admin.register(Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('user', 'created_at', 'updated_at')
+    list_display = ('id', 'user', 'created_at', 'updated_at')
     search_fields = ('user__full_name', 'user__phone')
     list_filter = ('created_at',)
 
-    def get_model_perms(self, request):
-        if not request.user.is_staff:
-            return {}
-        return super().get_model_perms(request)
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if not request.user.is_superuser:
-            return qs.filter(user=request.user)
-        return qs
-
+   
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'quantity', 'status', 'category', 'created_at')
+    list_display = ('id', 'name', 'price', 'quantity', 'status', 'category', 'created_at')
     search_fields = ('name', 'comment')
-    list_filter = ('status', 'category', 'sellers')
-    autocomplete_fields = ('sellers', 'category')
+    list_filter = ('status', 'category', 'seller')
+    autocomplete_fields = ('seller', 'category')
 
-    def get_model_perms(self, request):
-        if not request.user.is_staff:
-            return {}
-        return super().get_model_perms(request)
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if not request.user.is_superuser:
-            return qs.filter(sellers=request.user)
-        return qs
+   
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created_at', 'updated_at')
+    list_display = ('id', 'name', 'created_at', 'updated_at')
     search_fields = ('name',)
 
     def get_model_perms(self, request):
