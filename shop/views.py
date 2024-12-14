@@ -92,6 +92,8 @@ def seller_register(request):
         return redirect('index')
 
     return render(request, 'products/seller_register.html')
+
+
 @login_required
 def add_product(request):
     if not hasattr(request.user, 'seller'):

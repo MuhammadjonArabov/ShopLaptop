@@ -27,7 +27,7 @@ class CustomUserAdmin(UserAdmin):
 
 @admin.register(Seller)
 class SellerAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'created_at', 'updated_at')
+    list_display = ('id', 'user', 'created_at', 'image')
     search_fields = ('user__full_name',)
     list_filter = ('created_at',)
 

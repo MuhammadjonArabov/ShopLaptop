@@ -59,7 +59,7 @@ class User(AbstractUser):
 
 class Seller(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='seller')
-    images = models.ImageField(upload_to='seller_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='seller_images/', blank=True, null=True)
 
     def __str__(self):
         return self.user.full_name
