@@ -5,7 +5,8 @@ from .models import Product, User
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'price', 'quantity', 'comment', 'images']
+        fields = ['name', 'price', 'comment', 'quantity', 'category', 'images']
+
 
 class SellerUpdateForm(forms.ModelForm):
     class Meta:
@@ -17,3 +18,4 @@ class SellerUpdateForm(forms.ModelForm):
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
         return phone
+

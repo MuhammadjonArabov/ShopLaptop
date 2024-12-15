@@ -11,7 +11,6 @@
             <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'product_list' %}">Mahsulotlar</a></li>
             <li><a href="{% url 'seller_register' %}">Seller bo'lish</a></li>
-            <li><a href="{% url 'seller_profile' %}">Seller profile</a></li>
             <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
             <li><a href="{% url 'login' %}">Login</a></li>
         </ul>
@@ -42,8 +41,9 @@
                     <p><strong>Kategoriyasi:</strong> {{ product.category.name }}</p>
                     <p><strong>Izoh:</strong> {{ product.comment }}</p>
                     <div class="product-actions">
-                        <a href="#" class="btn btn-edit">O'zgartirish</a>
-                        <a href="#" class="btn btn-delete">O'chirish</a>
+                        <a href="{% url 'product_update' pk=product.pk %}" class="btn btn-edit">O'zgartirish</a>
+
+<!--                        <a href="#" class="btn btn-delete">O'chirish</a>-->
                     </div>
                 </div>
             </div>

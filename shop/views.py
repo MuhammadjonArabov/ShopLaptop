@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .forms import SellerUpdateForm
+from .forms import SellerUpdateForm, ProductForm
 from .models import User, Seller, Customer, Category, Product
 
 
@@ -145,7 +145,7 @@ def seller_profile(request):
         return redirect('index')
 
     seller = request.user.seller
-    products = Product.objects.filter(seller=seller)
+    products = Product.objects.filter(seller=seller, status=True)
     product_count = products.count()
     total_quantity = sum(product.quantity for product in products)
 
@@ -181,3 +181,27 @@ def seller_update(request):
         form = SellerUpdateForm(instance=request.user)
 
     return render(request, 'products/seller_update.html', {'form': form, 'seller': seller})
+
+
+def product_update(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            if 'images' in request.FILES:
+                product.images = request.FILES['images']
+                product.save()
+            return redirect('seller_profile')
+    else:
+        form = ProductForm(instance=product)
+
+    return render(request, 'products/product_update.html', {'form': form, 'product': product})
+
+
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    product.status = False
+    product.save()
+    return redirect('seller_profile')

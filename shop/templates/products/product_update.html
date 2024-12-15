@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/product_update.css' %}">
+    <title>Update Product</title>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'product_list' %}">Products</a></li>
+            <li><a href="{% url 'add_product' %}">Add Product</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Update Product</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_name">Product Name</label>
+                {{ form.name }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_price">Price</label>
+                {{ form.price }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_comment">Comment</label>
+                {{ form.comment }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_quantity">Quantity</label>
+                {{ form.quantity }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_category">Category</label>
+                {{ form.category }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_images">Product Image</label>
+                {% if product.images %}
+                    <img src="{{ product.images.url }}" alt="Current Image" id="current-image" style="max-width: 100px; margin-bottom: 10px; cursor: pointer;">
+                {% else %}
+                    <p>No image available</p>
+                {% endif %}
+                <!-- Hidden file input -->
+                <input type="file" id="image-upload" name="images" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="form-group actions">
+                <button type="submit" class="btn-submit">Update Product</button>
+
+                <!-- Delete button to deactivate the product -->
+                <form method="POST" action="{% url 'product_delete' product.id %}" style="display:inline-block;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-delete">Delete Product</button>
+                </form>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to trigger the file input when clicking on the image
+        document.getElementById("current-image").addEventListener("click", function() {
+            document.getElementById("image-upload").click();
+        });
+    </script>
+</body>
+</html>
