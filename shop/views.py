@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+
+from .forms import SellerUpdateForm
 from .models import User, Seller, Customer, Category, Product
 
 
@@ -154,3 +156,23 @@ def seller_profile(request):
         'total_quantity': total_quantity,
     }
     return render(request, 'products/seller.html', context)
+
+
+@login_required
+def seller_update(request):
+    if not request.user.is_seller:
+        messages.error(request, "Only sellers can update their profile.")
+        return redirect('index')
+
+    seller = request.user.seller
+
+    if request.method == 'POST':
+        form = SellerUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('seller_profile')
+    else:
+        form = SellerUpdateForm(instance=request.user)
+
+    return render(request, 'products/seller_update.html', {'form': form})

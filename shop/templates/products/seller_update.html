@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/seller_update.css' %}">
+    <title>Update Profile</title>
+</head>
+<body>
+     <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'product_list' %}">Mahsulotlar</a></li>
+            <li><a href="{% url 'seller_register' %}">Seller bo'lish</a></li>
+            <li><a href="{% url 'seller_profile' %}">Seller profile</a></li>
+            <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1>Update Your Profile</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_full_name">Full Name:</label>
+                {{ form.full_name }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_phone">Phone Number:</label>
+                {{ form.phone }}
+            </div>
+
+            <div class="form-group">
+                <label for="id_image">Profile Image:</label>
+                <input type="file" name="image" id="id_image">
+            </div>
+
+            <button type="submit" class="btn">Update Profile</button>
+        </form>
+    </div>
+
+</body>
+</html>

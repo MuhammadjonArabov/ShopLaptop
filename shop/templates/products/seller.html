@@ -25,7 +25,7 @@
                 <p><strong>Phone:</strong> {{ seller.user.phone }}</p>
                 <p><strong>Mahsulotlar turi:</strong> {{ product_count }}</p>
                 <p><strong>Umumiy mahsulotlar soni:</strong> {{ total_quantity }}</p>
-                <a href="#" class="btn btn-edit">O'zgartirish</a>
+                <a href="{% url 'seller_update' %}" class="btn btn-edit">O'zgartirish</a>
             </div>
         </div>
 

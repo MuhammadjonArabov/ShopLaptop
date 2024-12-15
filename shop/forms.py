@@ -1,5 +1,5 @@
 from django import forms
-from .models import Product, Seller
+from .models import Product, User
 
 
 class ProductForm(forms.ModelForm):
@@ -9,5 +9,10 @@ class ProductForm(forms.ModelForm):
 
 class SellerUpdateForm(forms.ModelForm):
     class Meta:
-        model = Seller
-        fields = ['image', 'user']
+        model = User
+        fields = ['full_name', 'phone']
+
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        return phone

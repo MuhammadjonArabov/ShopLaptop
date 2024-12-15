@@ -1,0 +1,198 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.navbar {
+    background-color: #174b63;
+    padding: 15px 0;
+    display: flex;
+    justify-content: center;
+    border-bottom: 3px solid #004080;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 50px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px 20px;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+.nav-menu a:hover {
+    color: #FFD700;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="file"],
+input[type="phone"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button[type="submit"] {
+    display: block;
+    width: 100%;
+    background-color: #174b63;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #004080;
+}
+
+
+.error-message {
+    color: red;
+    font-size: 14px;
+}
+
+.success-message {
+    color: green;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .nav-menu {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .container {
+        padding: 15px;
+        margin: 20px;
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="file"],
+    input[type="phone"],
+    textarea {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    button[type="submit"] {
+        font-size: 14px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-menu {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .container {
+        padding: 10px;
+        margin: 10px;
+        width: 95%;
+    }
+
+    h1 {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 12px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="file"],
+    input[type="phone"],
+    textarea {
+        font-size: 13px;
+        padding: 10px;
+    }
+
+    button[type="submit"] {
+        font-size: 13px;
+        padding: 10px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 900px;
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 28px;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    button[type="submit"] {
+        font-size: 18px;
+        padding: 18px;
+    }
+}
