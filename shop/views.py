@@ -1,8 +1,7 @@
-from unicodedata import category
-
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from .models import User, Seller, Customer, Category, Product
 
 
@@ -39,7 +38,6 @@ def register_user(request, user_type='customer'):
 
     template = 'products/seller_register.html' if user_type == 'seller' else 'products/register.html'
     return render(request, template)
-
 
 
 def login_view(request):
@@ -83,7 +81,7 @@ def seller_register(request):
             password=password,
             is_seller=True,
             is_customer=True,
-            is_staff=True,  
+            is_staff=True,
         )
 
         Seller.objects.create(user=user, image=image)
@@ -99,7 +97,7 @@ def add_product(request):
     if not hasattr(request.user, 'seller'):
         return redirect('index')
 
-    seller = request.user.seller  
+    seller = request.user.seller
     categories = Category.objects.all()
 
     if request.method == "POST":
@@ -117,7 +115,7 @@ def add_product(request):
             comment=comment,
             quantity=quantity,
             category=category,
-            seller=seller,  
+            seller=seller,
             status=False
         )
 
@@ -131,9 +129,28 @@ def add_product(request):
 
 
 def product_list(request):
-        products = Product.objects.filter(status=True)
-        context = {
-            'products': products
-        }
-        return render(request, 'products/product_list.html', context)
+    products = Product.objects.filter(status=True)
+    context = {
+        'products': products
+    }
+    return render(request, 'products/product_list.html', context)
 
+
+@login_required
+def seller_profile(request):
+    if not hasattr(request.user, 'seller'):
+        messages.error(request, "Siz seller emassiz!")
+        return redirect('index')
+
+    seller = request.user.seller
+    products = Product.objects.filter(seller=seller)
+    product_count = products.count()
+    total_quantity = sum(product.quantity for product in products)
+
+    context = {
+        'seller': seller,
+        'products': products,
+        'product_count': product_count,
+        'total_quantity': total_quantity,
+    }
+    return render(request, 'products/seller.html', context)

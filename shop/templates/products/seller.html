@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/seller.css' %}">
+    <title>Seller Profile</title>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'product_list' %}">Mahsulotlar</a></li>
+            <li><a href="{% url 'seller_register' %}">Seller bo'lish</a></li>
+            <li><a href="{% url 'seller_profile' %}">Seller profile</a></li>
+            <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="{{ seller.image.url }}" alt="Seller Image" class="profile-image">
+            <div class="profile-details">
+                <h2>{{ seller.user.full_name }}</h2>
+                <p><strong>Phone:</strong> {{ seller.user.phone }}</p>
+                <p><strong>Mahsulotlar turi:</strong> {{ product_count }}</p>
+                <p><strong>Umumiy mahsulotlar soni:</strong> {{ total_quantity }}</p>
+                <a href="#" class="btn btn-edit">O'zgartirish</a>
+            </div>
+        </div>
+
+        <h3>Sotuvchining mahsulotlari</h3>
+
+        <div class="product-list">
+            {% for product in products %}
+            <div class="product-item">
+                <img src="{{ product.images.url }}" alt="{{ product.name }}" class="product-image">
+                <div class="product-details">
+                    <h4>{{ product.name }}</h4>
+                    <p><strong>Narxi:</strong> {{ product.price }} UZS</p>
+                    <p><strong>Miqdori:</strong> {{ product.quantity }}</p>
+                    <p><strong>Kategoriyasi:</strong> {{ product.category.name }}</p>
+                    <p><strong>Izoh:</strong> {{ product.comment }}</p>
+                    <div class="product-actions">
+                        <a href="#" class="btn btn-edit">O'zgartirish</a>
+                        <a href="#" class="btn btn-delete">O'chirish</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
