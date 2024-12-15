@@ -12,6 +12,7 @@ class SellerUpdateForm(forms.ModelForm):
         model = User
         fields = ['full_name', 'phone']
 
+    image = forms.ImageField(required=False)
 
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')

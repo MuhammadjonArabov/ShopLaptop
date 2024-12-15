@@ -161,7 +161,7 @@ def seller_profile(request):
 @login_required
 def seller_update(request):
     if not request.user.is_seller:
-        messages.error(request, "Only sellers can update their profile.")
+        messages.error(request, "Faqat sotuvchilar o'z profillarini yangilashlari mumkin.")
         return redirect('index')
 
     seller = request.user.seller
@@ -170,9 +170,14 @@ def seller_update(request):
         form = SellerUpdateForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Profile updated successfully.')
+
+            if 'image' in request.FILES:
+                seller.image = request.FILES['image']
+                seller.save()
+
+            messages.success(request, 'Profil muvaffaqiyatli yangilandi..')
             return redirect('seller_profile')
     else:
         form = SellerUpdateForm(instance=request.user)
 
-    return render(request, 'products/seller_update.html', {'form': form})
+    return render(request, 'products/seller_update.html', {'form': form, 'seller': seller})
