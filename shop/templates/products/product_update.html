@@ -47,18 +47,17 @@
             <div class="form-group">
                 <label for="id_images">Product Image</label>
                 {% if product.images %}
-                    <img src="{{ product.images.url }}" alt="Current Image" id="current-image" style="max-width: 100px; margin-bottom: 10px; cursor: pointer;">
+                    <img src="{{ product.images.url }}" alt="Current Image" id="current-image" style="max-width: 100px; margin-bottom: 10px; cursor: pointer;" onclick="triggerFileInput()">
                 {% else %}
                     <p>No image available</p>
                 {% endif %}
-                <!-- Hidden file input -->
-                <input type="file" id="image-upload" name="images" accept="image/*" style="display: none;">
+                <input type="file" id="image-upload" name="images" accept="image/*" style="display: none;" onchange="updateImagePreview(event)">
+                <img id="image-preview" src="#" alt="Image Preview" style="max-width: 100px; display: none; margin-top: 10px;">
             </div>
 
             <div class="form-group actions">
                 <button type="submit" class="btn-submit">Update Product</button>
 
-                <!-- Delete button to deactivate the product -->
                 <form method="POST" action="{% url 'product_delete' product.id %}" style="display:inline-block;">
                     {% csrf_token %}
                     <button type="submit" class="btn-delete">Delete Product</button>
@@ -68,10 +67,30 @@
     </div>
 
     <script>
-        // JavaScript to trigger the file input when clicking on the image
-        document.getElementById("current-image").addEventListener("click", function() {
-            document.getElementById("image-upload").click();
-        });
+        // Trigger the hidden file input when the image is clicked
+        function triggerFileInput() {
+            document.getElementById('image-upload').click();
+        }
+
+        // Update the image preview when a new file is selected
+        function updateImagePreview(event) {
+            const file = event.target.files[0];
+            const currentImage = document.getElementById('current-image');
+            const imagePreview = document.getElementById('image-preview');
+
+            if (file) {
+                // Hide the current image (old image) and show the preview
+                currentImage.style.display = 'none';  // Hide old image
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block'; // Show the new image once selected
+                };
+
+                reader.readAsDataURL(file);
+            }
+        }
     </script>
 </body>
 </html>

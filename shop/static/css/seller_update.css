@@ -94,7 +94,6 @@ button[type="submit"]:hover {
     background-color: #004080;
 }
 
-
 .error-message {
     color: red;
     font-size: 14px;
@@ -103,6 +102,20 @@ button[type="submit"]:hover {
 .success-message {
     color: green;
     font-size: 14px;
+}
+
+.image-preview {
+    display: block;
+    margin-bottom: 10px;
+    cursor: pointer;
+    max-width: 150px; /* Set a fixed size for the image */
+    max-height: 150px; /* Ensure it maintains its aspect ratio within the set size */
+    object-fit: cover; /* Make sure the image covers the set area without distortion */
+    border-radius: 5px;
+}
+
+.image-preview:hover {
+    opacity: 0.8;
 }
 
 @media (max-width: 768px) {
@@ -174,25 +187,5 @@ button[type="submit"]:hover {
     button[type="submit"] {
         font-size: 13px;
         padding: 10px;
-    }
-}
-
-@media (min-width: 1024px) {
-    .container {
-        max-width: 900px;
-        padding: 25px;
-    }
-
-    h1 {
-        font-size: 28px;
-    }
-
-    .form-group {
-        margin-bottom: 25px;
-    }
-
-    button[type="submit"] {
-        font-size: 18px;
-        padding: 18px;
     }
 }
