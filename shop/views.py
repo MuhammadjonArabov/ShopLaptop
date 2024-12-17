@@ -1,4 +1,4 @@
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, HttpResponseNotAllowed
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -202,11 +202,10 @@ def product_update(request, pk):
 
 
 def product_delete(request, pk):
-    product = get_object_or_404(Product, pk=pk)
+    product = get_object_or_404(Product, pk=pk, status=True)
 
     if request.method == 'POST':
-        product.status = False
-        product.save()
+        product.delete()
         return redirect('seller_profile')
 
-    return redirect('/')
+    return HttpResponseNotAllowed(['POST'])
