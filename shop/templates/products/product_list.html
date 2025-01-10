@@ -10,17 +10,11 @@
 <body>
     <nav class="navbar">
         <ul class="nav-menu">
-            <li><a href="{% url 'index' %}">Home</a></li>
             <li><a href="{% url 'seller_register' %}">Seller bo'lish</a></li>
             <li><a href="{% url 'seller_profile' %}">Seller profile</a></li>
             <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
             <li><a href="{% url 'login' %}">Login</a></li>
-            <li>
-                <a href="{% url 'index' %}" class="cart-item">
-                    <img src="{% static 'img/shopping-cart.png' %}" alt="Savat" class="cart-image">
-                    <span class="cart-count">{{ cart_count}}</span>
-                </a>
-            </li>
+
         </ul>
     </nav>
 

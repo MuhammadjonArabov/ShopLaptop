@@ -37,7 +37,7 @@ def register_user(request, user_type='customer'):
             Customer.objects.create(user=user)
 
         login(request, user)
-        return redirect('index')
+        return redirect('product_list')
 
     template = 'products/seller_register.html' if user_type == 'seller' else 'products/register.html'
     return render(request, template)
@@ -51,16 +51,12 @@ def login_view(request):
 
         if user:
             login(request, user)
-            return redirect('index')
+            return redirect('product_list')
         else:
             return render(request, 'products/login.html', {'error': 'Telefon yoki parol noto‘g‘ri.'})
 
     return render(request, 'products/login.html')
 
-
-@login_required
-def index(request):
-    return render(request, 'products/index.html', {'user': request.user})
 
 
 def register(request):
@@ -90,7 +86,7 @@ def seller_register(request):
         Seller.objects.create(user=user, image=image)
 
         login(request, user)
-        return redirect('index')
+        return redirect('product_list')
 
     return render(request, 'products/seller_register.html')
 
@@ -98,7 +94,7 @@ def seller_register(request):
 @login_required
 def add_product(request):
     if not hasattr(request.user, 'seller'):
-        return redirect('index')
+        return redirect('product_list')
 
     seller = request.user.seller
     categories = Category.objects.all()
@@ -126,7 +122,7 @@ def add_product(request):
             product.images = image
         product.save()
 
-        return redirect('index')
+        return redirect('product_list')
 
     return render(request, 'products/add_product.html', {'categories': categories})
 
@@ -163,7 +159,7 @@ def seller_profile(request):
 def seller_update(request):
     if not request.user.is_seller:
         messages.error(request, "Faqat sotuvchilar o'z profillarini yangilashlari mumkin.")
-        return redirect('index')
+        return redirect('product_list')
 
     seller = request.user.seller
 
@@ -227,4 +223,4 @@ def add_to_cart(request, product_id):
         cart_item.save()
 
     messages.success(request, f"{product.name} savatga qo'shildi.")
-    return redirect('index')
+    return redirect('product_list')
