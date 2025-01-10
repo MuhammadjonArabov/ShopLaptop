@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from .forms import SellerUpdateForm, ProductForm
-from .models import User, Seller, Customer, Category, Product
+from .models import User, Seller, Customer, Category, Product, Cart
 
 
 def register_user(request, user_type='customer'):
@@ -209,3 +209,22 @@ def product_delete(request, pk):
         return redirect('seller_profile')
 
     return HttpResponseNotAllowed(['POST'])
+
+@login_required
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    customer = request.user.is_customer
+
+    cart_item, created = Cart.objects.get_or_create(
+        product=product,
+        customer=customer,
+        defaults={'quantity': 1, 'all_sum': product.price}
+    )
+
+    if not created:
+        cart_item.quantity += 1
+        cart_item.all_sum = cart_item.quantity * product.price
+        cart_item.save()
+
+    messages.success(request, f"{product.name} savatga qo'shildi.")
+    return redirect('index')

@@ -15,6 +15,12 @@
             <li><a href="{% url 'seller_profile' %}">Seller profile</a></li>
             <li><a href="{% url 'add_product' %}">Mahsulot qo'shish</a></li>
             <li><a href="{% url 'login' %}">Login</a></li>
+            <li>
+                <a href="{% url 'index' %}" class="cart-item">
+                    <img src="{% static 'img/shopping-cart.png' %}" alt="Savat" class="cart-image">
+                    <span class="cart-count">{{ cart_count}}</span>
+                </a>
+            </li>
         </ul>
     </nav>
 
@@ -36,6 +42,10 @@
                         <p><strong>Miqdor:</strong> {{ product.quantity }}</p>
                         <p><strong>Sotuvchi:</strong> {{ product.seller.user.full_name }}</p>
                         <p><strong>Telefon:</strong> {{ product.seller.user.phone }}</p>
+                        <form action="{% url 'add_to_cart' product.id %}" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="add-to-cart-btn">Savatga qo'shish</button>
+                        </form>
                     </div>
                 </div>
             {% endif %}
@@ -57,5 +67,30 @@
             });
         }
     </script>
+    <script>
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const url = this.closest('form').action;
+    
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const cartCountElement = document.querySelector('.cart-count');
+                        cartCountElement.textContent = data.cart_count;
+                    } else {
+                        alert('Mahsulotni qo\'shishda xatolik yuz berdi.');
+                    }
+                });
+            });
+        });
+    </script>
+    
 </body>
 </html>
